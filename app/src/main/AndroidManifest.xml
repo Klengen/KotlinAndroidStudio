@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.klengen.kotlinandroidtry">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name_label"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".recipes.NewRecipeActivity"
+            android:label="@string/title_activity_new_recipe"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".recipes.RecipesActivity"
+            android:label="@string/title_activity_recipes"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:label="@string/app_name_label"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ingredients.NewIngredientActivity"
+            android:label="@string/ingredient_list_label"
+            android:parentActivityName=".ingredients.IngredientListActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ingredients.IngredientListActivity"
+            android:label="@string/ingredient_list_label"
+            android:theme="@style/AppTheme" />
+    </application>
+
+</manifest>

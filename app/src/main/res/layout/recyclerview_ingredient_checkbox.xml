@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="42dp" >
+
+    <TextView
+            android:id="@+id/textView"
+            style="@style/cookingApp_title"
+            android:layout_width="300dp"
+            android:textSize="@dimen/ingredient_list_text_size"
+            android:layout_height="42dp"
+            android:gravity="center_vertical"
+            android:maxLength="25"
+            android:paddingLeft="5dp"
+            />
+
+    <CheckBox
+        android:id="@id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

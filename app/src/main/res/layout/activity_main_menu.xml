@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageButton
+        android:id="@+id/menuButtonIngredient"
+        android:layout_width="400dp"
+        android:layout_height="180dp"
+        android:contentDescription="@string/menu_button_ingredient"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/menuButtonRecipes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ingredients" />
+
+    <ImageButton
+        android:id="@+id/menuButtonRecipes"
+        android:layout_width="400dp"
+        android:layout_height="180dp"
+        android:contentDescription="@string/menu_button_recipes"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/menuButtonSearchRecipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menuButtonIngredient"
+        app:srcCompat="@drawable/book" />
+
+    <ImageButton
+        android:id="@+id/menuButtonSearchRecipe"
+        android:layout_width="400dp"
+        android:layout_height="180dp"
+        android:contentDescription="@string/menu_button_search_recipe"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menuButtonRecipes"
+        app:srcCompat="@drawable/groceries" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
