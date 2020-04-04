@@ -5,6 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "ingredient_table")
-open class Ingredient(
+data class Ingredient(
     @ColumnInfo(name = "ingredient") val name: String,
     @PrimaryKey(autoGenerate = true) val id : Long = 0)

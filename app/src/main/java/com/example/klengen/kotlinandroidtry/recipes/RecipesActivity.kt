@@ -16,11 +16,10 @@ import com.example.klengen.kotlinandroidtry.database.adapter.RecipeListAdapter
 
 import kotlinx.android.synthetic.main.activity_recipes.*
 
-class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickListener {
+class RecipesActivity : AppCompatActivity() {
 
     private val newRecipeActivityRequestcode = 11
     private lateinit var ingredientViewModel: CookingAppViewModel
-    var recipes: ArrayList<Recipe> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +28,11 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
         Log.d("Recipe","Recipename: OnCreate")
 
         val recyclerView: RecyclerView = recyclerview_recipes_container
-        val adapter = RecipeListAdapter(recipes,this)
+        val adapter = RecipeListAdapter()
 
         ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
         ingredientViewModel.allRecipes.observe(this, Observer { recipes ->
-            recipes?.let { adapter.recipes = recipes }
+            recipes?.let { adapter.setIngredients(it) }
         })
 
         recyclerView.adapter = adapter
@@ -43,10 +42,6 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
             val intent = Intent(this@RecipesActivity, NewRecipeActivity::class.java)
             startActivityForResult(intent,1)
         }
-    }
-
-    override fun onRecipeClick(recipe: Recipe, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {

@@ -17,10 +17,10 @@ class CookingAppViewModel(application: Application) : AndroidViewModel(applicati
     init {
         val ingredientDao = CookingAppDatabase.getDatabase(application, viewModelScope).ingredientDao()
         val recipeDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeDao()
-        val recipeIngredientDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeIngredientRelation()
+        //val recipeIngredientDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeIngredientRelation()
         repository =
             CookingAppRepository(
-                ingredientDao,recipeDao,recipeIngredientDao
+                ingredientDao,recipeDao
             )
         allIngredients = repository.allIngredients
         allRecipes = repository.allRecipes

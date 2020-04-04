@@ -1,6 +1,7 @@
 package com.example.klengen.kotlinandroidtry.database
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -12,15 +13,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(entities = [
-    Ingredient::class,
-    RecipeIngredientRelation::class,
-    Recipe::class], version = 13 , exportSchema = false)
+    Ingredient::class,Recipe::class
+    ], version = 15 , exportSchema = false)
 
 abstract class CookingAppDatabase : RoomDatabase(){
 
     abstract fun ingredientDao(): IngredientDao
     abstract  fun recipeDao(): RecipeDao
-    abstract fun recipeIngredientRelation(): RecipeIngredientDao
 
     private class CookingAppDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
@@ -31,20 +30,19 @@ abstract class CookingAppDatabase : RoomDatabase(){
 
                     val ingredientDao = database.ingredientDao()
                     val recipeDao = database.recipeDao()
-                    val recipeIngredientDao = database.recipeIngredientRelation()
+//                    val recipeIngredientDao = database.recipeIngredientRelation()
 
                     ingredientDao.deleteAll()
+                    recipeDao.deleteAll()
 
-                    populateDatabase(ingredientDao,recipeDao,recipeIngredientDao)
+                    populateDatabase(ingredientDao,recipeDao)
                 }
             }
         }
 
-        suspend fun populateDatabase(ingredientDao: IngredientDao, recipeDao: RecipeDao, recipeIngredientDao: RecipeIngredientDao) {
-            // Delete all content here.
-            ingredientDao.deleteAll()
-            recipeDao.deleteAll()
+        suspend fun populateDatabase(ingredientDao: IngredientDao, recipeDao: RecipeDao) {
 
+            Log.d("Populate", "Populate Database")
             // Add sample words.
             var ingredient =
                 Ingredient("Tomaten")

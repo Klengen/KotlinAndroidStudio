@@ -25,7 +25,7 @@ class IngredientListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ingredient_list)
 
-        val recyclerView = recyclerview
+        val recyclerView = recyclerview_ingredients_container
         val adapter = IngredientListAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
