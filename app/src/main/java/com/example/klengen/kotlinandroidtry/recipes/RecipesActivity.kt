@@ -16,10 +16,12 @@ import com.example.klengen.kotlinandroidtry.database.adapter.RecipeListAdapter
 
 import kotlinx.android.synthetic.main.activity_recipes.*
 
-class RecipesActivity : AppCompatActivity() {
+class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickListener {
 
     private val newRecipeActivityRequestcode = 11
     private lateinit var ingredientViewModel: CookingAppViewModel
+
+    private var recipes:List<Recipe> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,7 @@ class RecipesActivity : AppCompatActivity() {
         Log.d("Recipe","Recipename: OnCreate")
 
         val recyclerView: RecyclerView = recyclerview_recipes_container
-        val adapter = RecipeListAdapter()
+        val adapter = RecipeListAdapter(recipes, this)
 
         ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
         ingredientViewModel.allRecipes.observe(this, Observer { recipes ->
@@ -54,5 +56,9 @@ class RecipesActivity : AppCompatActivity() {
                 Unit
             }
         }
+    }
+
+    override fun onRecipeClick(recipe: Recipe, position: Int) {
+        Log.d("Recipe", "Recipe "+recipe.name+" on Position "+position+ " clicked")
     }
 }

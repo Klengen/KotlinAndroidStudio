@@ -56,7 +56,7 @@ abstract class CookingAppDatabase : RoomDatabase(){
 
             var recipe = Recipe("Tomatensoße")
                 recipeDao.insert(recipe)
-            recipe = Recipe("Miiiimimii")
+            recipe = Recipe("Reis mit Curry")
             recipeDao.insert(recipe)
 
 //            val recipeIngredient = RecipeIngredientRelation(0,0)
