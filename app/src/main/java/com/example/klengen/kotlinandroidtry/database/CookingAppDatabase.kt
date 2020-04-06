@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @Database(entities = [
     Ingredient::class,Recipe::class
-    ], version = 15 , exportSchema = false)
+    ], version = 16 , exportSchema = false)
 
 abstract class CookingAppDatabase : RoomDatabase(){
 
@@ -52,6 +52,30 @@ abstract class CookingAppDatabase : RoomDatabase(){
             ingredientDao.insert(ingredient)
             ingredient =
                 Ingredient("Nudeln")
+            ingredientDao.insert(ingredient)
+            Ingredient("Tomaten2")
+            ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Milch2")
+            ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Nudeln2")
+            ingredientDao.insert(ingredient)
+            Ingredient("Tomaten3")
+            ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Milch3")
+            ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Nudeln3")
+            ingredientDao.insert(ingredient)
+            Ingredient("Tomaten4")
+            ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Milch4")
+            ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Nudeln4")
             ingredientDao.insert(ingredient)
 
             var recipe = Recipe("Tomatensoße")

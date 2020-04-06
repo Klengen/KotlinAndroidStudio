@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,8 +51,8 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
 //                ingredients.forEach{}
 
                 val recipe = recipeName.text.toString()
-                replyIntent.putExtra("recipename", recipe)
-                replyIntent.putExtra("ingredient_ids", adapter.getIdOfSelectedIngredients())
+                replyIntent.putExtra(REPLY_RECIPENAME, recipe)
+                replyIntent.putExtra(REPLY_INGREDIENT_ID, adapter.getIdOfSelectedIngredients())
                 setResult(Activity.RESULT_OK, replyIntent)
 //                ingredientViewModel.insertRecipeWithIngredients(recipe,ingredients)
                 finish()
@@ -64,14 +65,15 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
     override fun onIngredientClick(ingredient: Ingredient, position: Int) {
         val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
         Toast.makeText(this,"Geklickt: "+ingredient.name,Toast.LENGTH_LONG).show()
-        if(adapter.selectedIngredients.containsKey(ingredient)){
-            recyclerview.getChildAt(position).textView.setBackgroundColor(Color.RED)
+        if(adapter.selectedIngredients.containsKey(ingredient) && position!= null){
+            recyclerview.getChildAt(position).textView.setBackgroundColor(Color.LTGRAY)
         }else{
-            recyclerview.getChildAt(position).textView.setBackgroundColor(Color.GREEN)
+            recyclerview.getChildAt(position).textView.setBackgroundColor(ContextCompat.getColor(this,R.color.background))
         }
 
     }
     companion object{
-        const val EXTRA_REPLY = ""
+        const val REPLY_RECIPENAME = "recipename"
+        const val REPLY_INGREDIENT_ID = "ingredient_ids"
     }
 }
