@@ -2,17 +2,20 @@ package com.example.klengen.kotlinandroidtry.recipes
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
 import com.example.klengen.kotlinandroidtry.database.CookingAppViewModel
 import com.example.klengen.kotlinandroidtry.database.Ingredient
 import com.example.klengen.kotlinandroidtry.database.adapter.IngredientCheckboxAdapter
 import kotlinx.android.synthetic.main.activity_new_recipe.*
+import kotlinx.android.synthetic.main.recyclerview_ingredient_checkbox.view.textView
 
 class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngredientClickListener {
 
@@ -20,23 +23,23 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
     private lateinit var ingredientViewModel: CookingAppViewModel
     var ingredients: ArrayList<Ingredient> = ArrayList()
 
+    val adapter = IngredientCheckboxAdapter(ingredients,this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_recipe)
 
-        val adapter =
-            IngredientCheckboxAdapter(ingredients,this)
+
 
         ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
         ingredientViewModel.allIngredients.observe(this, Observer { ingredients ->
             ingredients?.let { adapter.ingredients = ingredients }
         })
 
-        val recyclerview = recyclerview_ingrediends_checkbox
+        val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(this)
 
-       /* button_save.setOnClickListener {
+        button_save.setOnClickListener {
            val recipeName  = recipename_input
             if(recipeName.length()>1){
                 val replyIntent = Intent()
@@ -47,19 +50,26 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
 //                ingredients.forEach{}
 
                 val recipe = recipeName.text.toString()
-                replyIntent.putExtra(EXTRA_REPLY, recipe)
+                replyIntent.putExtra("recipename", recipe)
+                replyIntent.putExtra("ingredient_ids", adapter.getIdOfSelectedIngredients())
                 setResult(Activity.RESULT_OK, replyIntent)
 //                ingredientViewModel.insertRecipeWithIngredients(recipe,ingredients)
+                finish()
             }else{
                 Toast.makeText(this,"Rezepname muss länger sein!",Toast.LENGTH_LONG).show()
             }
         }
 
-        */
-
     }
     override fun onIngredientClick(ingredient: Ingredient, position: Int) {
+        val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
         Toast.makeText(this,"Geklickt: "+ingredient.name,Toast.LENGTH_LONG).show()
+        if(adapter.selectedIngredients.containsKey(ingredient)){
+            recyclerview.getChildAt(position).textView.setBackgroundColor(Color.RED)
+        }else{
+            recyclerview.getChildAt(position).textView.setBackgroundColor(Color.GREEN)
+        }
+
     }
     companion object{
         const val EXTRA_REPLY = ""

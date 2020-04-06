@@ -49,11 +49,16 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
             super.onActivityResult(requestCode, resultCode, intentData)
 
-        if(requestCode == newRecipeActivityRequestcode && resultCode == Activity.RESULT_OK){
-            intentData?.getStringExtra(NewRecipeActivity.EXTRA_REPLY)?.let{
+        if(resultCode == Activity.RESULT_OK){
+            intentData?.getStringExtra("recipename")?.let{
                 val recipe = Recipe(it)
                 ingredientViewModel.insertRecipe(recipe)
-                Unit
+            }
+            intentData?.getLongArrayExtra("ingredient_ids")?.let {
+                var result:String =""
+                var ar : List<Long> = it.toList()
+                ar.forEach { Log.d("result", it.toString()) }
+
             }
         }
     }
