@@ -8,10 +8,10 @@
     <EditText
             android:id="@+id/ingredient_name_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/name_input_height"
             app:layout_constraintTop_toTopOf="parent"
             android:hint="@string/hint_ingredient"
-            android:textSize="18sp" />
+            android:textSize="@dimen/name_input_text_size" />
 
     <Button
             android:id="@+id/button_save"

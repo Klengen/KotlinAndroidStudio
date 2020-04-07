@@ -22,8 +22,10 @@
     //*Add recipe*\\
     <string name="recipe_name">Rezeptname</string>
     <string name="title_activity_new_recipe">NewRecipeActivity</string>
+    <string name="checked">Checked image</string>
 
     //*Add ingredient*\\
     <string name="hint_ingredient">Zutat…</string>
+    <string name="remove_button">Entfernen</string>
 
 </resources>

@@ -1,6 +1,10 @@
 <resources>
-    <dimen name="ingredient_list_text_size">20dp</dimen>
+    <dimen name="recyclerview_list_text_size">20sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="small_padding">6dp</dimen>
     <dimen name="big_padding">16dp</dimen>
+
+    <dimen name="name_input_height">75dp</dimen>
+    <dimen name="name_input_text_size">24sp</dimen>
+    <dimen name="recyclerview_height">50dp</dimen>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -16,7 +17,7 @@ import com.example.klengen.kotlinandroidtry.database.CookingAppViewModel
 import com.example.klengen.kotlinandroidtry.database.Ingredient
 import com.example.klengen.kotlinandroidtry.database.adapter.IngredientCheckboxAdapter
 import kotlinx.android.synthetic.main.activity_new_recipe.*
-import kotlinx.android.synthetic.main.recyclerview_ingredient_checkbox.view.textView
+import kotlinx.android.synthetic.main.recyclerview_ingredient_checkbox.view.*
 
 class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngredientClickListener {
 
@@ -66,9 +67,11 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
         val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
         Toast.makeText(this,"Geklickt: "+ingredient.name,Toast.LENGTH_LONG).show()
         if(adapter.selectedIngredients.containsKey(ingredient) && position!= null){
-            recyclerview.getChildAt(position).textView.setBackgroundColor(Color.LTGRAY)
+            recyclerview.getChildAt(position).setBackgroundResource(R.drawable.selectable_recyclerview_selected)
+            recyclerview.getChildAt(position).check.visibility = View.VISIBLE
         }else{
-            recyclerview.getChildAt(position).textView.setBackgroundColor(ContextCompat.getColor(this,R.color.background))
+            recyclerview.getChildAt(position).setBackgroundResource(R.drawable.selectable_recyclerview)
+            recyclerview.getChildAt(position).check.visibility = View.INVISIBLE
         }
 
     }
