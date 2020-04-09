@@ -1,13 +1,10 @@
 package com.example.klengen.kotlinandroidtry.database.adapter
 
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.IntegerRes
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
 import com.example.klengen.kotlinandroidtry.database.Ingredient
@@ -15,6 +12,7 @@ import com.example.klengen.kotlinandroidtry.database.Ingredient
 class IngredientCheckboxAdapter internal constructor(var ingredients: List<Ingredient>, private var onIngredientClickListener: OnIngredientClickListener) : RecyclerView.Adapter<IngredientCheckboxAdapter.IngredientCheckboxViewHolder>() {
 
         var selectedIngredients: MutableMap<Ingredient,Int> = mutableMapOf()
+
         override fun getItemCount() = ingredients.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientCheckboxViewHolder {
@@ -23,7 +21,7 @@ class IngredientCheckboxAdapter internal constructor(var ingredients: List<Ingre
     }
 
     override fun onBindViewHolder(holder: IngredientCheckboxViewHolder, position: Int) {
-        holder.initialize(ingredients[position],onIngredientClickListener)
+        holder.initialize(getIngredient(position),onIngredientClickListener)
     }
 
     inner class IngredientCheckboxViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -34,35 +32,24 @@ class IngredientCheckboxAdapter internal constructor(var ingredients: List<Ingre
             ingredientName.text = ingredient.name
 
             itemView.setOnClickListener {
-                toggleIngredient(ingredient)
-                click.onIngredientClick(ingredient,adapterPosition)
+                toggleIngredient(adapterPosition)
+                click.onIngredientClick(ingredient,layoutPosition)
             }
         }
 
-        fun toggleIngredient(ingredient: Ingredient){
+        private fun toggleIngredient(position: Int){
+            var ingredient: Ingredient = getIngredient(position)
+            Log.d("Selected", "Selected ingredient posi: $position name: ${ingredient.name}")
             if(selectedIngredients.containsKey(ingredient)){
                 selectedIngredients.remove(ingredient)
             }else{
-                selectedIngredients[ingredient] = ingredients.indexOf(ingredient)
+                selectedIngredients[ingredient] = position
             }
-            Log.d("Selected", "Selected ingredients "+selectedIngredients.size)
+
         }
     }
 
-    fun getIngredient(position: Int): Ingredient {
-        return ingredients[position]
-    }
-
-    /*fun getIdOfSelectedIngredients():ArrayList<Long>{
-        Log.d("Selected", "getIdOfSelectedIngredients")
-        var sel: ArrayList<Long> = ArrayList(selectedIngredients.size)
-        var i = 0
-        Log.d("Selected", "Selected ingredients "+selectedIngredients.size)
-        selectedIngredients.forEach{
-            sel[i++]=it.key.id
-        }
-        return sel
-    }*/
+    fun getIngredient(position: Int) = ingredients[position]
 
     fun getIdOfSelectedIngredients() = selectedIngredients.map { it.key.id }.toLongArray()
 

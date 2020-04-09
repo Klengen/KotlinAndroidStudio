@@ -23,14 +23,17 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
 
 //    private val newIngredientActivityRequestCode = 2
     private lateinit var ingredientViewModel: CookingAppViewModel
+    private lateinit var adapter: IngredientCheckboxAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
     var ingredients: ArrayList<Ingredient> = ArrayList()
 
-    val adapter = IngredientCheckboxAdapter(ingredients,this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_recipe)
 
-
+        adapter = IngredientCheckboxAdapter(ingredients,this)
+        linearLayoutManager = LinearLayoutManager(this)
 
         ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
         ingredientViewModel.allIngredients.observe(this, Observer { ingredients ->
@@ -39,17 +42,12 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
 
         val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
         recyclerview.adapter = adapter
-        recyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerview.layoutManager = linearLayoutManager
 
         button_save.setOnClickListener {
            val recipeName  = recipename_input
             if(recipeName.length()>1){
                 val replyIntent = Intent()
-
-//                var selectedIngredients:List<Ingredient>
-
-                //TODO
-//                ingredients.forEach{}
 
                 val recipe = recipeName.text.toString()
                 replyIntent.putExtra(REPLY_RECIPENAME, recipe)
@@ -64,14 +62,18 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
 
     }
     override fun onIngredientClick(ingredient: Ingredient, position: Int) {
-        val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
+        var recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
+        var child = recyclerview.getChildAt(position-linearLayoutManager.findFirstVisibleItemPosition())
         Toast.makeText(this,"Geklickt: "+ingredient.name,Toast.LENGTH_LONG).show()
-        if(adapter.selectedIngredients.containsKey(ingredient) && position!= null){
-            recyclerview.getChildAt(position).setBackgroundResource(R.drawable.selectable_recyclerview_selected)
-            recyclerview.getChildAt(position).check.visibility = View.VISIBLE
+        if(adapter.selectedIngredients.containsKey(ingredient)){
+            child.setBackgroundResource(R.drawable.selectable_recyclerview_selected)
+            child.check.visibility = View.VISIBLE
+            child.textView.setTextColor(R.color.selected_font_color)
+
         }else{
-            recyclerview.getChildAt(position).setBackgroundResource(R.drawable.selectable_recyclerview)
-            recyclerview.getChildAt(position).check.visibility = View.INVISIBLE
+            child.setBackgroundResource(R.drawable.selectable_recyclerview)
+            child.check.visibility = View.INVISIBLE
+            child.textView.setTextColor(R.color.basic_font_color)
         }
 
     }
