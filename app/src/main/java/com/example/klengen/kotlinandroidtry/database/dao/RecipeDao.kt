@@ -10,7 +10,7 @@ interface RecipeDao{
     fun getAllRecipes(): LiveData<List<Recipe>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(recipe: Recipe)
+    suspend fun insert(recipe: Recipe):Long
 
     @Query("DELETE FROM recipe_table")
     suspend fun deleteAll()

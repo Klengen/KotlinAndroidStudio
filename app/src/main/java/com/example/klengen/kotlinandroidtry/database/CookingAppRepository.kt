@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.klengen.kotlinandroidtry.database.dao.IngredientDao
 import com.example.klengen.kotlinandroidtry.database.dao.RecipeDao
+import com.example.klengen.kotlinandroidtry.database.dao.RecipeIngredientDao
 
-class CookingAppRepository (private val ingredientDao: IngredientDao, private val recipeDao: RecipeDao){
+class CookingAppRepository (private val ingredientDao: IngredientDao, private val recipeDao: RecipeDao, private val recipeIngredientDao: RecipeIngredientDao){
 
     val allIngredients: LiveData<List<Ingredient>> = ingredientDao.getAllIngredients()
     val allRecipes: LiveData<List<Recipe>> = recipeDao.getAllRecipes()
@@ -25,6 +26,13 @@ class CookingAppRepository (private val ingredientDao: IngredientDao, private va
     suspend fun deleteRecipe(recipe: Recipe){
         recipeDao.insert(recipe)
         Log.d("Recipe", "Recipe Reposotory insert")
+    }
+
+    suspend fun insertRecipeWithIngredients(recipe: Recipe,ingredients: List<Ingredient>){
+        ingredients.forEach {
+            val rir = RecipeIngredientRef(recipe.id,it.id)
+            recipeIngredientDao.insert(rir)
+        }
     }
 
 }

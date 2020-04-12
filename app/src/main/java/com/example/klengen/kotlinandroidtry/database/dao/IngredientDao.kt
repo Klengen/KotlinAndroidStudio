@@ -10,7 +10,7 @@ interface IngredientDao{
     fun getAllIngredients(): LiveData<List<Ingredient>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(ingredient: Ingredient)
+    suspend fun insert(ingredient: Ingredient):Long
 
     @Query("DELETE FROM ingredient_table")
     suspend fun deleteAll()

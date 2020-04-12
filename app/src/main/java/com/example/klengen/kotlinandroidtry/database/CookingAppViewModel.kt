@@ -17,10 +17,10 @@ class CookingAppViewModel(application: Application) : AndroidViewModel(applicati
     init {
         val ingredientDao = CookingAppDatabase.getDatabase(application, viewModelScope).ingredientDao()
         val recipeDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeDao()
-        //val recipeIngredientDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeIngredientRelation()
+        val recipeIngredientDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeIngredientDao()
         repository =
             CookingAppRepository(
-                ingredientDao,recipeDao
+                ingredientDao,recipeDao,recipeIngredientDao
             )
         allIngredients = repository.allIngredients
         allRecipes = repository.allRecipes
@@ -41,5 +41,9 @@ class CookingAppViewModel(application: Application) : AndroidViewModel(applicati
 
     fun removeRecipe(recipe: Recipe) = viewModelScope.launch {
         repository.deleteRecipe(recipe)
+    }
+
+    fun insertRecipeWithIngredients(recipe: Recipe,ingredients: List<Ingredient>) = viewModelScope.launch {
+        repository.insertRecipeWithIngredients(recipe,ingredients)
     }
 }

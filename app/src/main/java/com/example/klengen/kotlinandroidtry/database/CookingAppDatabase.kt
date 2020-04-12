@@ -13,13 +13,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(entities = [
-    Ingredient::class,Recipe::class
-    ], version = 17 , exportSchema = false)
+    Ingredient::class,Recipe::class,RecipeIngredientRef::class
+    ], version = 19 , exportSchema = false)
 
 abstract class CookingAppDatabase : RoomDatabase(){
 
     abstract fun ingredientDao(): IngredientDao
     abstract  fun recipeDao(): RecipeDao
+    abstract fun recipeIngredientDao(): RecipeIngredientDao
 
     private class CookingAppDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
@@ -30,24 +31,21 @@ abstract class CookingAppDatabase : RoomDatabase(){
 
                     val ingredientDao = database.ingredientDao()
                     val recipeDao = database.recipeDao()
-//                    val recipeIngredientDao = database.recipeIngredientRelation()
+                    val recipeIngredientDao = database.recipeIngredientDao()
 
                     ingredientDao.deleteAll()
                     recipeDao.deleteAll()
 
-                    populateDatabase(ingredientDao,recipeDao)
+                    populateDatabase(ingredientDao,recipeDao,recipeIngredientDao)
                 }
             }
         }
 
-        suspend fun populateDatabase(ingredientDao: IngredientDao, recipeDao: RecipeDao) {
+        suspend fun populateDatabase(ingredientDao: IngredientDao, recipeDao:RecipeDao, recipeIngredientDao: RecipeIngredientDao) {
 
             Log.d("Populate", "Populate Database")
             // Add sample words.
             var ingredient =
-                Ingredient("Tomaten")
-            ingredientDao.insert(ingredient)
-            ingredient =
                 Ingredient("Milch")
             ingredientDao.insert(ingredient)
             ingredient =
@@ -80,13 +78,16 @@ abstract class CookingAppDatabase : RoomDatabase(){
             ingredient =
                 Ingredient("Mehl")
             ingredientDao.insert(ingredient)
+            ingredient =
+                Ingredient("Tomaten")
+            val idI = ingredientDao.insert(ingredient)
 
-            var recipe = Recipe("Tomatensoße")
-                recipeDao.insert(recipe)
-            recipe = Recipe("Reis mit Curry")
-            recipeDao.insert(recipe)
+            val recipe = Recipe("Tomatensoße")
+                val idR = recipeDao.insert(recipe)
+            val recipeWithIngredients = RecipeIngredientRef(idR, idI)
+            Log.d("recipeWithIngredients","Recipe: $idR Ingredient: $idI")
+                recipeIngredientDao.insert(recipeWithIngredients)
 
-//            val recipeIngredient = RecipeIngredientRelation(0,0)
 
         }
     }
@@ -103,11 +104,7 @@ abstract class CookingAppDatabase : RoomDatabase(){
                     context.applicationContext,
                     CookingAppDatabase::class.java,
                     "cooking_database"
-                ).addCallback(
-                    CookingAppDatabaseCallback(
-                        scope
-                    )
-                ).fallbackToDestructiveMigration().build()
+                ).addCallback(CookingAppDatabaseCallback(scope)).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 // return instance
                 instance
