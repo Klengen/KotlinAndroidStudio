@@ -13,6 +13,7 @@ class CookingAppViewModel(application: Application) : AndroidViewModel(applicati
 
     val allIngredients: LiveData<List<Ingredient>>
     val allRecipes: LiveData<List<Recipe>>
+    val allRecipesWithIngredients: LiveData<List<RecipeWithIngredients>>
 
     init {
         val ingredientDao = CookingAppDatabase.getDatabase(application, viewModelScope).ingredientDao()
@@ -24,6 +25,7 @@ class CookingAppViewModel(application: Application) : AndroidViewModel(applicati
             )
         allIngredients = repository.allIngredients
         allRecipes = repository.allRecipes
+        allRecipesWithIngredients = repository.allRecipeWithIngredients
     }
 
     fun insertIngredient(ingredient: Ingredient) = viewModelScope.launch {

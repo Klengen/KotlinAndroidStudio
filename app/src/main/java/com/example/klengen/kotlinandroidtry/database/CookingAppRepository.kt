@@ -10,6 +10,7 @@ class CookingAppRepository (private val ingredientDao: IngredientDao, private va
 
     val allIngredients: LiveData<List<Ingredient>> = ingredientDao.getAllIngredients()
     val allRecipes: LiveData<List<Recipe>> = recipeDao.getAllRecipes()
+    val allRecipeWithIngredients: LiveData<List<RecipeWithIngredients>> = recipeIngredientDao.getRecipesWithIngredients()
 
     suspend fun insertIngredient(ingredient: Ingredient){
         ingredientDao.insert(ingredient)
