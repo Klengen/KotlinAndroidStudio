@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.klengen.kotlinandroidtry.ingredients.IngredientListActivity
 import com.example.klengen.kotlinandroidtry.recipes.RecipesActivity
+import com.example.klengen.kotlinandroidtry.search.SearchActivity
 
 import kotlinx.android.synthetic.main.activity_main_menu.*
 
@@ -31,7 +32,7 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
         menuButtonSearchRecipe.setOnClickListener{
-            val intent = Intent(this, IngredientListActivity::class.java)
+            val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
     }
