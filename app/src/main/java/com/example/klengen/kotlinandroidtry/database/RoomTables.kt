@@ -17,6 +17,6 @@ data class Recipe(
 
 @Entity(tableName = "recipe_ingredient_table", primaryKeys = ["recipeId","ingredientId"])
 data class RecipeIngredientRef(
-    @ColumnInfo(name = "ingredientId")val ingredientId:Long,
-    @ColumnInfo(name = "recipeId")val recipeId: Long
+    @ColumnInfo(name = "recipeId")val recipeId: Long,
+    @ColumnInfo(name = "ingredientId")val ingredientId:Long
 )
