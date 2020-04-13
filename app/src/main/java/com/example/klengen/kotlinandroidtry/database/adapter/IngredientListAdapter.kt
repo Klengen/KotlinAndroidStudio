@@ -8,8 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
-import com.example.klengen.kotlinandroidtry.database.CookingAppViewModel
 import com.example.klengen.kotlinandroidtry.database.Ingredient
+import com.example.klengen.kotlinandroidtry.database.viewModel.IngredientViewModel
 import kotlinx.android.synthetic.main.recyclerview_ingredient.view.*
 
 class IngredientListAdapter internal constructor() : RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder>() {
@@ -34,7 +34,7 @@ class IngredientListAdapter internal constructor() : RecyclerView.Adapter<Ingred
         holder.ingredientItemTextView.text = current.name
         holder.ingredientItemButton.setOnClickListener {
             val ingredientViewModel =
-                CookingAppViewModel(
+                IngredientViewModel(
                     application = Application()
                 )
             ingredientViewModel.removeIngredient(this.ingredients[position])

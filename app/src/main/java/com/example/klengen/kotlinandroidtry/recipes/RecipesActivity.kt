@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
-import com.example.klengen.kotlinandroidtry.database.CookingAppViewModel
 import com.example.klengen.kotlinandroidtry.database.Recipe
+import com.example.klengen.kotlinandroidtry.database.viewModel.RecipeViewModel
 import com.example.klengen.kotlinandroidtry.database.adapter.RecipeListAdapter
 
 import kotlinx.android.synthetic.main.activity_recipes.*
@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.activity_recipes.*
 class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickListener {
 
     private val newRecipeActivityRequestcode = 11
-    private lateinit var ingredientViewModel: CookingAppViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
+
 
     private var recipes:List<Recipe> = emptyList()
 
@@ -32,8 +33,8 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
         val recyclerView: RecyclerView = recyclerview_recipes_container
         val adapter = RecipeListAdapter(recipes, this)
 
-        ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
-        ingredientViewModel.allRecipes.observe(this, Observer { recipes ->
+        recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
+        recipeViewModel.allRecipes.observe(this, Observer { recipes ->
             recipes?.let { adapter.setIngredients(it) }
         })
 
@@ -50,21 +51,24 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
             super.onActivityResult(requestCode, resultCode, intentData)
 
         if(resultCode == Activity.RESULT_OK){
-            intentData?.getStringExtra(NewRecipeActivity.REPLY_RECIPENAME)?.let{
-                val recipe = Recipe(it)
-                Log.d("Recipe", "Init id:" +recipe.id)
-                ingredientViewModel.insertRecipe(recipe)
-            }
-            intentData?.getLongArrayExtra(NewRecipeActivity.REPLY_INGREDIENT_ID)?.let {
-                var result:String =""
-                var ar : List<Long> = it.toList()
-                ar.forEach { Log.d("result", it.toString()) }
+            intentData?.getStringExtra(NewRecipeActivity.REPLY_RECIPENAME)?.let{ recipe ->
+                val recipe = Recipe(recipe)
 
+                intentData.getLongArrayExtra(NewRecipeActivity.REPLY_INGREDIENT_ID)?.let { ingredients ->
+                    recipeViewModel.insertRecipeWithIngredients(recipe,ingredients.toList())
+                }
             }
+
         }
     }
 
     override fun onRecipeClick(recipe: Recipe, position: Int) {
-        Log.d("Recipe", "Recipe "+recipe.id+" "+recipe.name+" on Position "+position+ " clicked")
+
+        /*val ingredients:List<Ingredient> = ingredientViewModel.getIngredientsOfRecipe(recipe.id)
+        var s:String = recipe.name+": "
+        ingredients.forEach { s+=it.name+" " }
+        Log.d("onRecipeClick",s)*/
     }
+
+
 }

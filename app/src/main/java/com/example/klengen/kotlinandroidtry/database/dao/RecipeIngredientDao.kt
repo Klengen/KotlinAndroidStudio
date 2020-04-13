@@ -12,6 +12,10 @@ interface RecipeIngredientDao {
     @Query("SELECT * FROM recipe_table")
     fun getRecipesWithIngredients():LiveData<List<RecipeWithIngredients>>
 
+    @Transaction
+    @Query("SELECT * FROM recipe_table WHERE recipeId = :recipeId")
+    fun getIngredientsOfRecipe(recipeId: Long):RecipeWithIngredients
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(recipeWithIngredients: RecipeIngredientRef)
 }

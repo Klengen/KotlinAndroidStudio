@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klengen.kotlinandroidtry.R
-import com.example.klengen.kotlinandroidtry.database.CookingAppViewModel
 import com.example.klengen.kotlinandroidtry.database.Ingredient
+import com.example.klengen.kotlinandroidtry.database.viewModel.IngredientViewModel
 import com.example.klengen.kotlinandroidtry.database.adapter.IngredientListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_ingredient_list.*
 class IngredientListActivity : AppCompatActivity() {
 
     private val newIngredientActivityRequestCode = 1
-    private lateinit var ingredientViewModel: CookingAppViewModel
+    private lateinit var ingredientViewModel: IngredientViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class IngredientListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Get a new or existing ViewModel from the ViewModelProvider.
-        ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
+        ingredientViewModel = ViewModelProvider(this).get(IngredientViewModel::class.java)
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is

@@ -1,28 +1,29 @@
 package com.example.klengen.kotlinandroidtry.recipes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
-import com.example.klengen.kotlinandroidtry.database.CookingAppViewModel
 import com.example.klengen.kotlinandroidtry.database.Ingredient
+import com.example.klengen.kotlinandroidtry.database.viewModel.IngredientViewModel
 import com.example.klengen.kotlinandroidtry.database.adapter.IngredientCheckboxAdapter
+import com.example.klengen.kotlinandroidtry.database.viewModel.NewRecipeViewModel
 import kotlinx.android.synthetic.main.activity_new_recipe.*
 import kotlinx.android.synthetic.main.recyclerview_ingredient_checkbox.view.*
 
 class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngredientClickListener {
 
 //    private val newIngredientActivityRequestCode = 2
-    private lateinit var ingredientViewModel: CookingAppViewModel
+    private lateinit var ingredientViewModel: NewRecipeViewModel
     private lateinit var adapter: IngredientCheckboxAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
@@ -35,7 +36,7 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
         adapter = IngredientCheckboxAdapter(ingredients,this)
         linearLayoutManager = LinearLayoutManager(this)
 
-        ingredientViewModel = ViewModelProvider(this).get(CookingAppViewModel::class.java)
+        ingredientViewModel = ViewModelProvider(this).get(NewRecipeViewModel::class.java)
         ingredientViewModel.allIngredients.observe(this, Observer { ingredients ->
             ingredients?.let { adapter.ingredients = ingredients }
         })
@@ -62,18 +63,19 @@ class NewRecipeActivity : AppCompatActivity(), IngredientCheckboxAdapter.OnIngre
 
     }
     override fun onIngredientClick(ingredient: Ingredient, position: Int) {
-        var recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
-        var child = recyclerview.getChildAt(position-linearLayoutManager.findFirstVisibleItemPosition())
+        val recyclerview: RecyclerView = recyclerview_ingrediends_checkbox
+        val child = recyclerview.getChildAt(position-linearLayoutManager.findFirstVisibleItemPosition())
         Toast.makeText(this,"Geklickt: "+ingredient.name,Toast.LENGTH_LONG).show()
         if(adapter.selectedIngredients.containsKey(ingredient)){
             child.setBackgroundResource(R.drawable.selectable_recyclerview_selected)
             child.check.visibility = View.VISIBLE
-            child.textView.setTextColor(R.color.selected_font_color)
+//            child.textView.setTextColor(R.color.selected_font_color)
+            Log.d("Clicked","${ingredient.id}  ${ingredient.name}")
 
         }else{
             child.setBackgroundResource(R.drawable.selectable_recyclerview)
             child.check.visibility = View.INVISIBLE
-            child.textView.setTextColor(R.color.basic_font_color)
+//            child.textView.setTextColor(R.color.basic_font_color)
         }
 
     }
