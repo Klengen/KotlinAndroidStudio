@@ -15,10 +15,7 @@ class IngredientViewModel (application: Application):AndroidViewModel(applicatio
     val allIngredients: LiveData<List<Ingredient>>
 
     init {
-        val ingredientDao = CookingAppDatabase.getDatabase(
-            application,
-            viewModelScope
-        ).ingredientDao()
+        val ingredientDao = CookingAppDatabase.getDatabase(application,viewModelScope).ingredientDao()
 
         repository =
             IngredientsRepository(

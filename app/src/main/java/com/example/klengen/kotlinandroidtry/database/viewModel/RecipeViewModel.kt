@@ -13,13 +13,12 @@ class RecipeViewModel (application: Application):AndroidViewModel(application){
     private val repository: RecipeRepository
 
     val allRecipesWithIngredients: LiveData<List<RecipeWithIngredients>>
-    val allRecipes: LiveData<List<Recipe>>
+    lateinit var searchResult: LiveData<RecipeWithIngredients>
 
     init {
         val recipeIngredientDao = CookingAppDatabase.getDatabase(application, viewModelScope).recipeIngredientDao()
         val recipeDao = CookingAppDatabase.getDatabase(application,viewModelScope).recipeDao()
         repository = RecipeRepository(recipeDao, recipeIngredientDao)
-        allRecipes = repository.allRecipes
         allRecipesWithIngredients = repository.allRecipeWithIngredients
     }
 
@@ -33,5 +32,9 @@ class RecipeViewModel (application: Application):AndroidViewModel(application){
     fun insertRecipeWithIngredients(recipe: Recipe, ingredients: List<Long>) = viewModelScope.launch {
         Log.d("Insert","$ingredients[0] $ingredients[1]")
         repository.insertRecipeWithIngredients(recipe,ingredients)
+    }
+
+    fun getIngredientsOfRecipe(id:Long){
+        searchResult = repository.getIngredientsOfRecipe(id)
     }
 }

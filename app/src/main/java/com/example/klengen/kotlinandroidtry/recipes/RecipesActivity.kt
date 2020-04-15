@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
 import com.example.klengen.kotlinandroidtry.database.Recipe
+import com.example.klengen.kotlinandroidtry.database.RecipeWithIngredients
 import com.example.klengen.kotlinandroidtry.database.viewModel.RecipeViewModel
 import com.example.klengen.kotlinandroidtry.database.adapter.RecipeListAdapter
 
@@ -18,11 +19,12 @@ import kotlinx.android.synthetic.main.activity_recipes.*
 
 class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickListener {
 
-    private val newRecipeActivityRequestcode = 11
+    private val newRecipeActivityRequestCode = 11
+    private val recipeDetailsRequestCode = 10
     private lateinit var recipeViewModel: RecipeViewModel
 
 
-    private var recipes:List<Recipe> = emptyList()
+    private var recipes:List<RecipeWithIngredients> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +36,8 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
         val adapter = RecipeListAdapter(recipes, this)
 
         recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
-        recipeViewModel.allRecipes.observe(this, Observer { recipes ->
-            recipes?.let { adapter.setIngredients(it) }
+        recipeViewModel.allRecipesWithIngredients.observe(this, Observer { recipes ->
+            recipes?.let { adapter.setRecipes(it) }
         })
 
         recyclerView.adapter = adapter
@@ -43,14 +45,14 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
 
         fabadd.setOnClickListener {
             val intent = Intent(this@RecipesActivity, NewRecipeActivity::class.java)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent,newRecipeActivityRequestCode)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
             super.onActivityResult(requestCode, resultCode, intentData)
 
-        if(resultCode == Activity.RESULT_OK){
+        if(resultCode == Activity.RESULT_OK && requestCode == newRecipeActivityRequestCode){
             intentData?.getStringExtra(NewRecipeActivity.REPLY_RECIPENAME)?.let{ recipe ->
                 val recipe = Recipe(recipe)
 
@@ -60,14 +62,18 @@ class RecipesActivity : AppCompatActivity(), RecipeListAdapter.OnRecipeClickList
             }
 
         }
+        if(resultCode == Activity.RESULT_OK && requestCode == recipeDetailsRequestCode){
+
+
+        }
+
     }
 
-    override fun onRecipeClick(recipe: Recipe, position: Int) {
+    override fun onRecipeClick(recipe: RecipeWithIngredients, position: Int) {
 
-        /*val ingredients:List<Ingredient> = ingredientViewModel.getIngredientsOfRecipe(recipe.id)
-        var s:String = recipe.name+": "
-        ingredients.forEach { s+=it.name+" " }
-        Log.d("onRecipeClick",s)*/
+        val intent = Intent(this@RecipesActivity, RecipeInformation::class.java)
+        intent.putExtra(RecipeInformation.INTENT_EXTRA_RECIPE,recipe.recipe.id)
+        startActivityForResult(intent,recipeDetailsRequestCode)
     }
 
 

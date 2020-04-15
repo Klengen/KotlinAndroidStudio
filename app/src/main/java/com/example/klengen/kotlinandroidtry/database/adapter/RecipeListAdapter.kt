@@ -8,17 +8,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klengen.kotlinandroidtry.R
 import com.example.klengen.kotlinandroidtry.database.Recipe
+import com.example.klengen.kotlinandroidtry.database.RecipeWithIngredients
 import kotlinx.android.synthetic.main.recyclerview_recipes.view.*
 
-class RecipeListAdapter internal constructor(private var recipes: List<Recipe>, private var onRecipeClickListener: OnRecipeClickListener) : RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder>() {
+class RecipeListAdapter internal constructor(private var recipes: List<RecipeWithIngredients>, private var onRecipeClickListener: OnRecipeClickListener) : RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder>() {
 
     override fun getItemCount() = recipes.size
 
     inner class RecipeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val recipeName: TextView = itemView.textView
 
-        fun initialize(recipe: Recipe,click: OnRecipeClickListener){
-            recipeName.text = recipe.name
+        fun initialize(recipe: RecipeWithIngredients,click: OnRecipeClickListener){
+            recipeName.text = recipe.recipe.name
 
             itemView.setOnClickListener{
                 click.onRecipeClick(recipe,adapterPosition)
@@ -37,12 +38,12 @@ class RecipeListAdapter internal constructor(private var recipes: List<Recipe>, 
         holder.initialize(recipes[position],onRecipeClickListener)
     }
 
-    internal fun setIngredients(recipes: List<Recipe>) {
+    internal fun setRecipes(recipes: List<RecipeWithIngredients>) {
         this.recipes = recipes
         notifyDataSetChanged()
     }
 
     interface OnRecipeClickListener{
-        fun onRecipeClick(recipe: Recipe, position: Int)
+        fun onRecipeClick(recipe: RecipeWithIngredients, position: Int)
     }
 }

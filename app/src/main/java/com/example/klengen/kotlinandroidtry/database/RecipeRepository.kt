@@ -26,4 +26,8 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val recipeIngre
             recipeIngredientDao.insert(rir)
         }
     }
+
+    fun getIngredientsOfRecipe(recipeId:Long):LiveData<RecipeWithIngredients>{
+        return recipeIngredientDao.getIngredientsOfRecipe(recipeId)
+    }
 }
